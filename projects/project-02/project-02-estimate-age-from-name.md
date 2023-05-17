@@ -166,10 +166,10 @@ tbl_lifetables |>
   geom_step() +
   # Add labels (title, subtitle, x, y, caption)
   labs(
-    title = "Probability by age",
+    title = "Probability of survival 2022",
     subtitle = "probability",
-    x = "Probability",
-    y = "year",
+    x = "Year",
+    y = "Probability",
     caption = "Source: ssc"
   ) +
   # Update theme to move plot title
@@ -521,7 +521,7 @@ tbl_names_extended_age |>
     title = "Median ages for females",
     subtitle = "percentile",
     x = "Median Age",
-    y = "Year"
+    y = "Name"
   ) +
   # Update theme to clean up visual appearance of the plot
   theme(
