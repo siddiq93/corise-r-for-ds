@@ -7,7 +7,7 @@ output: github_document
 library(tidyverse)
 knitr::opts_chunk$set(
   echo = TRUE,
-  eval = FALSE,
+  error = TRUE,
   collapse = TRUE,
   comment = "#>",
   fig.path = "img/",

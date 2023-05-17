@@ -31,6 +31,20 @@ tbl_names <- readr::read_csv(file_name, show_col_types = FALSE)
 
 # Print tbl_names
  print(tbl_names)
+#> # A tibble: 2,052,781 × 4
+#>     year name      sex   nb_births
+#>    <dbl> <chr>     <chr>     <dbl>
+#>  1  1880 Mary      F          7065
+#>  2  1880 Anna      F          2604
+#>  3  1880 Emma      F          2003
+#>  4  1880 Elizabeth F          1939
+#>  5  1880 Minnie    F          1746
+#>  6  1880 Margaret  F          1578
+#>  7  1880 Ida       F          1472
+#>  8  1880 Alice     F          1414
+#>  9  1880 Bertha    F          1320
+#> 10  1880 Sarah     F          1288
+#> # ℹ 2,052,771 more rows
 ```
 
 #### Lifetables
@@ -121,6 +135,20 @@ file_name <- here::here("data/lifetables.csv.gz")
 tbl_lifetables <- readr::read_csv(file_name, show_col_types = FALSE)
 # Print `tbl_lifetables`
 print(tbl_lifetables)
+#> # A tibble: 5,040 × 9
+#>     year sex     age      qx     lx    dx    Lx      Tx    ex
+#>    <dbl> <chr> <dbl>   <dbl>  <dbl> <dbl> <dbl>   <dbl> <dbl>
+#>  1  1900 M         0 0.146   100000 14596 90026 4640595  46.4
+#>  2  1900 M         1 0.0381   85404  3257 83776 4550569  53.3
+#>  3  1900 M         2 0.0196   82147  1608 81343 4466793  54.4
+#>  4  1900 M         3 0.0135   80539  1090 79994 4385450  54.4
+#>  5  1900 M         4 0.0108   79449   858 79020 4305456  54.2
+#>  6  1900 M         5 0.00794  78591   624 78279 4226436  53.8
+#>  7  1900 M         6 0.0057   77967   444 77745 4148156  53.2
+#>  8  1900 M         7 0.00407  77523   316 77365 4070411  52.5
+#>  9  1900 M         8 0.00305  77207   235 77090 3993046  51.7
+#> 10  1900 M         9 0.00256  76972   197 76874 3915956  50.9
+#> # ℹ 5,030 more rows
 ```
 
 It is always a good idea to plot the data to understand it better. Given
@@ -147,6 +175,8 @@ tbl_lifetables |>
   # Update theme to move plot title
   theme(plot.title.position = 'plot')
 ```
+
+<img src="img/plot-lifetables-1.png" width="100%" style="display: block; margin: auto;" />
 
 Looking at the plot, we gather that a male born in 1950 has almost a 50%
 chance of being alive in 2022. Notice that `tbl_lifetable` only has
@@ -196,6 +226,20 @@ tbl_lifetables_extended <- tbl_lifetables |>
   ungroup()
 
 tbl_lifetables_extended
+#> # A tibble: 48,240 × 5
+#>    sex     age  year     lx is_imputed
+#>    <chr> <dbl> <dbl>  <dbl> <lgl>     
+#>  1 F         0  1900 100000 FALSE     
+#>  2 F         0  1901 100000 TRUE      
+#>  3 F         0  1902 100000 TRUE      
+#>  4 F         0  1903 100000 TRUE      
+#>  5 F         0  1904 100000 TRUE      
+#>  6 F         0  1905 100000 TRUE      
+#>  7 F         0  1906 100000 TRUE      
+#>  8 F         0  1907 100000 TRUE      
+#>  9 F         0  1908 100000 TRUE      
+#> 10 F         0  1909 100000 TRUE      
+#> # ℹ 48,230 more rows
 ```
 
 We can get the probability that a person has survived till 2022 by
@@ -217,12 +261,22 @@ tbl_lifetables_extended_2022 |>
   ) +
   # Add labels (title, subtitle, x, y, caption)
     labs(title = "Survival curve", x = "Year", y ="Probability", caption = "year")
+```
+
+<img src="img/plot-lifetables-extended-1.png" width="100%" style="display: block; margin: auto;" />
+
+``` r
   
   
   
   
   # Update theme to move plot title
   theme(plot.title.position = 'plot')
+#> List of 1
+#>  $ plot.title.position: chr "plot"
+#>  - attr(*, "class")= chr [1:2] "theme" "gg"
+#>  - attr(*, "complete")= logi FALSE
+#>  - attr(*, "validate")= logi TRUE
 ```
 
 Note how imputing the data provides more realistic estimates of the
@@ -249,6 +303,20 @@ tbl_names_extended <- tbl_names |>
   mutate(nb_alive = p_alive * nb_births)
 
 tbl_names_extended
+#> # A tibble: 1,990,272 × 8
+#>     year name      sex   nb_births   age is_imputed p_alive nb_alive
+#>    <dbl> <chr>     <chr>     <dbl> <dbl> <lgl>        <dbl>    <dbl>
+#>  1  1903 Mary      F         14275   119 TRUE             0        0
+#>  2  1903 Helen     F          6129   119 TRUE             0        0
+#>  3  1903 Anna      F          5098   119 TRUE             0        0
+#>  4  1903 Margaret  F          5046   119 TRUE             0        0
+#>  5  1903 Ruth      F          4517   119 TRUE             0        0
+#>  6  1903 Elizabeth F          3724   119 TRUE             0        0
+#>  7  1903 Marie     F          3469   119 TRUE             0        0
+#>  8  1903 Florence  F          3468   119 TRUE             0        0
+#>  9  1903 Ethel     F          3257   119 TRUE             0        0
+#> 10  1903 Mildred   F          3088   119 TRUE             0        0
+#> # ℹ 1,990,262 more rows
 ```
 
 ### Model Data
@@ -284,6 +352,10 @@ tbl_names_extended |>
   dplyr::filter(name == "William", sex == "M") |>
   # Estimate age stats
   estimate_age_stats()
+#> # A tibble: 1 × 7
+#>   `  0%` ` 25%` ` 50%` ` 75%` `100%` p_alive age_median
+#>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>      <dbl>
+#> 1      1     28     48     64    106   0.480       45.3
 ```
 
 Let us write another function that plots the age distribution for a
@@ -344,6 +416,8 @@ tbl_names_extended |>
   plot_estimated_age("Anna", "F")
 ```
 
+<img src="img/plot-estimated-age-1.png" width="100%" style="display: block; margin: auto;" />
+
 Let us now get the top 25 most popular names for Females.
 
 ``` r
@@ -366,6 +440,20 @@ tbl_names_female_top_25 <- tbl_names |>
 
   # Print `tbl_names_female_top_25`
   tbl_names_female_top_25
+#> # A tibble: 25 × 2
+#>    name      sex  
+#>    <chr>     <chr>
+#>  1 Mary      F    
+#>  2 Elizabeth F    
+#>  3 Patricia  F    
+#>  4 Jennifer  F    
+#>  5 Linda     F    
+#>  6 Barbara   F    
+#>  7 Margaret  F    
+#>  8 Susan     F    
+#>  9 Dorothy   F    
+#> 10 Sarah     F    
+#> # ℹ 15 more rows
 ```
 
 Let us join `tbl_names_extended` with `tbl_names_female_top_25` so that
@@ -389,6 +477,21 @@ tbl_names_extended_age <- tbl_names_extended |>
   janitor::clean_names()
 
 tbl_names_extended_age
+#> # A tibble: 25 × 9
+#>    name      sex   x0_percent x25_percent x50_percent x75_percent x100_percent
+#>    <chr>     <chr>      <dbl>       <dbl>       <dbl>       <dbl>        <dbl>
+#>  1 Emily     F              1          16          24          33        104. 
+#>  2 Ashley    F              1          24          31          36         90.5
+#>  3 Anna      F              1          18          29          48        106. 
+#>  4 Jessica   F              1          29          35          40        105. 
+#>  5 Sarah     F              1          25          34          42        104. 
+#>  6 Elizabeth F              1          24          39          57        105. 
+#>  7 Jennifer  F              1          37          43          49         95.7
+#>  8 Michelle  F              1          36          47          54        103. 
+#>  9 Kimberly  F              1          36          48          55         88.4
+#> 10 Lisa      F              1          47          54          59        101. 
+#> # ℹ 15 more rows
+#> # ℹ 2 more variables: p_alive <dbl>, age_median <dbl>
 ```
 
 We can now replicate the plot published by FiveThirtyEight by adding a
@@ -430,3 +533,5 @@ tbl_names_extended_age |>
     panel.background = element_rect(fill = '#f0f0f0')
   )
 ```
+
+<img src="img/plot-tbl-names-extended-age-1.png" width="100%" style="display: block; margin: auto;" />
