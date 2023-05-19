@@ -251,7 +251,7 @@ tbl_lifetables_extended_2022 <- tbl_lifetables_extended |>
 
 tbl_lifetables_extended_2022 |> 
   # Initialize a ggplot of year vs. probability of being alive (lx/10^5)
-    ggplot(aes(x = year, y = lx/10^5)) +
+    ggplot(aes(x = year, y = lx/10^5, color = sex)) +
   # Add a line layer
     geom_line() +
   # Add a step layer for the non-imputed data
@@ -260,7 +260,7 @@ tbl_lifetables_extended_2022 |>
     linetype = 'dashed'
   ) +
   # Add labels (title, subtitle, x, y, caption)
-    labs(title = "Survival curve", x = "Year", y ="Probability", caption = "year")
+    labs(title = "Survival curve until 2022", x = "Year", y ="Probability", caption = "year")
 ```
 
 <img src="img/plot-lifetables-extended-1.png" width="100%" style="display: block; margin: auto;" />
@@ -349,13 +349,13 @@ estimate_age_stats <- function(tbl) {
 
 tbl_names_extended |> 
   # Filter for Gertrude/F
-  dplyr::filter(name == "William", sex == "M") |>
+  dplyr::filter(name == "Gertrude", sex == "F") |>
   # Estimate age stats
   estimate_age_stats()
 #> # A tibble: 1 × 7
 #>   `  0%` ` 25%` ` 50%` ` 75%` `100%` p_alive age_median
 #>    <dbl>  <dbl>  <dbl>  <dbl>  <dbl>   <dbl>      <dbl>
-#> 1      1     28     48     64    106   0.480       45.3
+#> 1      1     63     72     79    106  0.0659       68.2
 ```
 
 Let us write another function that plots the age distribution for a
